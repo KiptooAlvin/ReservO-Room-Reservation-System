@@ -1,0 +1,12 @@
+Relationships Overview
+
+| ENTITY            | RELATIONSHIP                                                               |
+| ----------------- | -------------------------------------------------------------------------- |
+| User → Booking    | **One-to-Many** (One user can make many bookings)                          |
+| Room → Booking    | **One-to-Many** (One room can be booked many times but at different dates) |
+| Booking → Payment | **One-to-One** (Optional)                                                  |
+
+
+Admin:
+    username-> admin
+    password-> 1234
