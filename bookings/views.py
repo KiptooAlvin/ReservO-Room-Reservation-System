@@ -16,7 +16,7 @@ def booking_create(request):
             # Check availability
             if not booking.room.is_available_for_period(booking.check_in, booking.check_out):
                 messages.error(request, "Room is NOT available for the selected dates.")
-                return render(request, 'bookings/booking_form.html', {'form': form})
+                return render(request, 'bookings/booking_list.html', {'form': form})
 
             booking.total_price = booking.calculate_total_price()
             booking.save()
