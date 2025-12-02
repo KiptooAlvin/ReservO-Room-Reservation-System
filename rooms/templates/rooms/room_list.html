@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Rooms</h2>
+<a href="{% url 'room_create' %}" class="btn btn-primary">Add New Room</a>
+
+<table class="table table-bordered mt-3">
+    <tr>
+        <th>Room Number</th>
+        <th>Type</th>
+        <th>Capacity</th>
+        <th>Status</th>
+        <th>Image</th>
+        <th>Actions</th>
+    </tr>
+    {%  for room in rooms %}
+        <tr>
+            <td>{{ room.room_number }}</td>
+            <td>{{ room.room_type }}</td>
+            <td>{{ room.capacity }}</td>
+            <td>{{ room.status }}</td>
+            <td>
+                {% if room.image %}
+                    <img src="{{ room.image.url }}" width="80" >
+                {%  endif %}
+            </td>
+        <td>
+{#            <a href="{% url 'room_update' room.id %}" class="btn btn-sm btn-warning">Edit</a>#}
+            <a href="{% url 'room_delete' room.id %}" class="btn btn-sm btn-danger">Delete</a>
+
+        </td>
+        </tr>
+    {% endfor %}
+
+</table>
+{% endblock %}

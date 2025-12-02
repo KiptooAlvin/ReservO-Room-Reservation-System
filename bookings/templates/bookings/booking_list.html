@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2 class="mb-3">Bookings</h2>
+
+    <a href="{% url 'booking_create' %}" class="btn btn-primary mb-3">New Booking</a>
+
+    <table class="table table-bordered table-striped">
+    <thead class="table-dark">
+    <tr>
+        <th>User</th>
+        <th>Room</th>
+        <th>Check_in</th>
+        <th>Check_out</th>
+        <th>Total Price</th>
+        <th>Actions</th>
+    </tr>
+
+    </thead>
+    <tbody>
+    {% for booking in bookings %}
+        <tr>
+            <td>{{ bookings.user }}</td>
+            <td>{{ booking.room }}</td>
+            <td>{{ booking.check_in }}</td>
+            <td>{{ booking.check_out }}</td>
+            <td>{{ booking.total_price }}</td>
+            <td>
+                <a href="{% url 'booking_update' booking.id %}" class="btn btn-warning btn-sm">Edit</a>
+
+                <a href="{% url 'booking_delete' booking.id %}" class="btn btn-danger btn-sm">Delete</a>
+            </td>
+        </tr>
+    {%  endfor %}
+    </tbody>
+    </table>
+{% endblock %}
