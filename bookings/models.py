@@ -7,12 +7,15 @@ from django.utils import timezone
 
 # Use string for room foreign key to avoid import-time circular issues
 class Booking(models.Model):
+    STATUS_PENDING = 'pending'
+    STATUS_APPROVED = 'Approved'
+    STATUS_DECLINED = 'Declined'
+
     STATUS_CHOICES = [
-        ("pending", "Pending"),
-        ("confirmed", "Confirmed"),
-        ("cancelled", "Cancelled"),
-        ("checked_in", "Checked-in"),
-        ("checked_out", "Checked-out"),
+        (STATUS_PENDING, 'pending'),
+        (STATUS_APPROVED, 'Approved'),
+        (STATUS_DECLINED, 'Declined'),
+
     ]
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="bookings")

@@ -51,3 +51,10 @@ class Room(models.Model):
             check_in__lt=check_out,
             check_out__gt=check_in
         ).exists()
+
+class RoomType(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField(blank=True)
+
+    def __str__(self):
+        return self.name

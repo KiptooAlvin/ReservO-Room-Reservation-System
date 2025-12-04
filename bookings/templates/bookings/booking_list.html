@@ -1,37 +1,64 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2 class="mb-3">Bookings</h2>
+<div class="container mt-4">
+    <h2 class="mb-4">Bookings</h2>
 
-    <a href="{% url 'booking_create' %}" class="btn btn-primary mb-3">New Booking</a>
+    <a href="{% url 'bookings:booking_create' %}" class="btn btn-primary mb-3">New Booking</a>
 
-    <table class="table table-bordered table-striped">
-    <thead class="table-dark">
-    <tr>
-        <th>User</th>
-        <th>Room</th>
-        <th>Check_in</th>
-        <th>Check_out</th>
-        <th>Total Price</th>
-        <th>Actions</th>
-    </tr>
-
-    </thead>
-    <tbody>
-    {% for booking in bookings %}
-        <tr>
-            <td>{{ bookings.user }}</td>
-            <td>{{ booking.room }}</td>
-            <td>{{ booking.check_in }}</td>
-            <td>{{ booking.check_out }}</td>
-            <td>{{ booking.total_price }}</td>
-            <td>
-                <a href="{% url 'booking_update' booking.id %}" class="btn btn-warning btn-sm">Edit</a>
-
-                <a href="{% url 'booking_delete' booking.id %}" class="btn btn-danger btn-sm">Delete</a>
-            </td>
-        </tr>
-    {%  endfor %}
-    </tbody>
-    </table>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped text-center align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>User</th>
+                    <th>Room</th>
+                    <th>Check-in</th>
+                    <th>Check-out</th>
+                    <th>Total Price</th>
+                    <th>Actions</th>
+                    <th>Status</th>
+                    {% if user.is_staff %}
+                        <th>Admin Actions</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for booking in bookings %}
+                <tr>
+                    <td>{{ booking.user.username }}</td>
+                    <td>{{ booking.room }}</td>
+                    <td>{{ booking.check_in }}</td>
+                    <td>{{ booking.check_out }}</td>
+                    <td>${{ booking.total_price }}</td>
+                    <td>
+                        <a href="{% url 'bookings:booking_update' booking.id %}" class="btn btn-warning btn-sm me-1">Edit</a>
+                        <a href="{% url 'bookings:booking_delete' booking.id %}" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                    <td>
+                        {% if booking.status == 'Pending' %}
+                            <span class="badge bg-warning text-dark">{{ booking.status }}</span>
+                        {% elif booking.status == 'Approved' %}
+                            <span class="badge bg-success">{{ booking.status }}</span>
+                        {% elif booking.status == 'Declined' %}
+                            <span class="badge bg-danger">{{ booking.status }}</span>
+                        {% else %}
+                            {{ booking.status }}
+                        {% endif %}
+                    </td>
+                    {% if user.is_staff %}
+                        <td>
+                            {% if booking.status == 'Pending' %}
+                                <a href="{% url 'approve_booking' booking.id %}" class="btn btn-success btn-sm me-1">Approve</a>
+                                <a href="{% url 'decline_booking' booking.id %}" class="btn btn-danger btn-sm">Decline</a>
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock %}

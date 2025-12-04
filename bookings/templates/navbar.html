@@ -4,7 +4,10 @@
 
     </div>
     <ul class="navbar-nav">
-        <li class="nav-item"><a href="/rooms" class="navbar-link">Rooms</a></li>
+        {% if request.user.is_staff or request.user.is_superuser %}
+    <li><a href="/rooms/" class="btn btn-primary">Add Room</a></li>
+{% endif %}
+
         <li class="nav-item"><a href="/bookings" class="navbar-link">Bookings</a></li>
 
     </ul>

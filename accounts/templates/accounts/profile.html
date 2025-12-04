@@ -1,0 +1,45 @@
+{%  extends 'base.html' %}
+{% block content %}
+
+    <h2>Your profile</h2>
+
+    <p><strong>Username:</strong>{{ request.user.username }}</p>
+    <p><strong>Email:</strong>{{ request.user.email }}</p>
+
+    <hr>
+
+    <h3>Your Bookings</h3>
+    {%  if bookings %}
+        <table>
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Room</th>
+            <th>Dates</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for b in bookings %}
+            <tr>
+                <td>{{ b.id }}</td>
+                <td>{{ b.room }}</td>
+                <td>{{ b.check_in }} → {{ b.check_out }}</td>
+                <td>{{ b.get_status_display }}</td>
+            <td>
+    {% if b.status == "pending" %}
+        <a href="{% url 'bookings:edit' b.pk %}" class="btn btn-sm btn-warning">Edit</a>
+        <a href="{% url 'bookings:booking_delete' b.pk %}" class="btn btn-sm btn-danger">Delete</a>
+    {% endif %}
+</td>
+
+            </tr>
+
+        {%  endfor %}
+        </tbody>
+        </table>
+        {% else %}
+        <p>You have no bookings yet.</p>
+    {% endif %}
+
+{% endblock %}

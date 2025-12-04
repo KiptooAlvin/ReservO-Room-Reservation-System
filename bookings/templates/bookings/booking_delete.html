@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<h3>Delete Booking</h3>
+<h3>Delete Booking #{{ booking.id }}</h3>
 
     <p>Are you sure you want to delete the booking for
     <strong>{{ booking.user }}</strong>?
@@ -11,7 +11,7 @@
     <form method="post">
     {%  csrf_token %}
     <button class="btn btn-danger">Delete</button>
-        <a href="{% url 'booking_list' %}" class="btn btn-secondary">Cancel</a>
+        <a href="{% url 'bookings:booking_list' %}" class="btn btn-secondary">Cancel</a>
 
     </form>
 {% endblock %}
