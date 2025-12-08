@@ -1,0 +1,393 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<!-- Hero Section with Modern Gradient -->
+<section class="hero-section text-white text-center position-relative overflow-hidden">
+    <div class="hero-background"></div>
+    <div class="container position-relative" style="z-index: 2;">
+        <div class="hero-content">
+            <h1 class="display-3 fw-bold mb-4 animate-fade-in">Welcome to ReservO</h1>
+            <p class="lead mb-5 fs-4 opacity-90">Book your perfect room effortlessly. Fast, reliable, and convenient.</p>
+            <a href="/rooms/" class="btn btn-hero btn-lg px-5 py-3 rounded-pill shadow-lg">
+                <span class="me-2">Explore Rooms</span>
+                <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+    <div class="hero-wave">
+        <svg viewBox="0 0 1440 120" xmlns="http://www.w3.org/2000/svg">
+            <path fill="#f8f9fa" d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1360,58.7L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
+        </svg>
+    </div>
+</section>
+
+<!-- Room Types Section with Enhanced Cards -->
+<section class="py-5 bg-light">
+    <div class="container py-4">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold mb-3">Our Room Types</h2>
+            <p class="text-muted fs-5">Choose from our carefully curated selection of premium spaces</p>
+        </div>
+        <div class="row g-4">
+            <!-- Standard Room -->
+            <div class="col-md-4">
+                <div class="room-card card border-0 h-100 shadow-hover">
+                    <div class="card-img-wrapper">
+                        <img src="/media/rooms/double_room1.jpg" class="card-img-top" alt="Standard Room">
+                        <div class="card-overlay">
+                            <span class="badge bg-white text-primary px-3 py-2">Popular Choice</span>
+                        </div>
+                    </div>
+                    <div class="card-body p-4">
+                        <h5 class="card-title fw-bold mb-3">Standard Room</h5>
+                        <p class="card-text text-muted mb-3">Comfortable and cozy room with all essential amenities.</p>
+                        <div class="features mb-4">
+                            <span class="feature-badge">
+                                <i class="bi bi-wifi text-primary me-1"></i> Free WiFi
+                            </span>
+                            <span class="feature-badge">
+                                <i class="bi bi-tv text-primary me-1"></i> Smart TV
+                            </span>
+                        </div>
+                        <a href="/rooms/" class="btn btn-primary w-100 rounded-pill py-2">Book Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Single Room -->
+            <div class="col-md-4">
+                <div class="room-card card border-0 h-100 shadow-hover">
+                    <div class="card-img-wrapper">
+                        <img src="/media/rooms/single_room1.jpg" class="card-img-top" alt="Single Room">
+                        <div class="card-overlay">
+                            <span class="badge bg-white text-primary px-3 py-2">Best Value</span>
+                        </div>
+                    </div>
+                    <div class="card-body p-4">
+                        <h5 class="card-title fw-bold mb-3">Single Room</h5>
+                        <p class="card-text text-muted mb-3">Spacious room with premium features and elegant design.</p>
+                        <div class="features mb-4">
+                            <span class="feature-badge">
+                                <i class="bi bi-cup-hot text-primary me-1"></i> Coffee
+                            </span>
+                            <span class="feature-badge">
+                                <i class="bi bi-brightness-high text-primary me-1"></i> Natural Light
+                            </span>
+                        </div>
+                        <a href="/rooms/" class="btn btn-primary w-100 rounded-pill py-2">Book Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Conference Room -->
+            <div class="col-md-4">
+                <div class="room-card card border-0 h-100 shadow-hover">
+                    <div class="card-img-wrapper">
+                        <img src="/media/rooms/conference1.jpg" class="card-img-top" alt="Conference Room">
+                        <div class="card-overlay">
+                            <span class="badge bg-white text-primary px-3 py-2">Professional</span>
+                        </div>
+                    </div>
+                    <div class="card-body p-4">
+                        <h5 class="card-title fw-bold mb-3">Conference Room</h5>
+                        <p class="card-text text-muted mb-3">Perfect space for meetings and professional events.</p>
+                        <div class="features mb-4">
+                            <span class="feature-badge">
+                                <i class="bi bi-projector text-primary me-1"></i> Projector
+                            </span>
+                            <span class="feature-badge">
+                                <i class="bi bi-people text-primary me-1"></i> 20+ Seats
+                            </span>
+                        </div>
+                        <a href="/rooms/" class="btn btn-primary w-100 rounded-pill py-2">Book Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section with Icons -->
+<section class="py-5 features-section">
+    <div class="container py-4">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold mb-3">Why Choose ReservO?</h2>
+            <p class="text-muted fs-5">Experience excellence in every booking</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="feature-box text-center p-4 h-100">
+                    <div class="feature-icon-wrapper mb-4">
+                        <i class="bi bi-clock-fill display-3 text-primary"></i>
+                    </div>
+                    <h5 class="fw-bold mb-3">24/7 Service</h5>
+                    <p class="text-muted">Book and manage your reservations anytime, anywhere with our round-the-clock support.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-box text-center p-4 h-100">
+                    <div class="feature-icon-wrapper mb-4">
+                        <i class="bi bi-stars display-3 text-primary"></i>
+                    </div>
+                    <h5 class="fw-bold mb-3">Clean & Comfortable</h5>
+                    <p class="text-muted">Our rooms are meticulously maintained to ensure maximum comfort and hygiene.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-box text-center p-4 h-100">
+                    <div class="feature-icon-wrapper mb-4">
+                        <i class="bi bi-lightning-charge-fill display-3 text-primary"></i>
+                    </div>
+                    <h5 class="fw-bold mb-3">Easy Booking</h5>
+                    <p class="text-muted">Fast and simple booking process with instant confirmation and secure payments.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call-to-Action Section -->
+<section class="cta-section text-white text-center py-5 position-relative overflow-hidden">
+    <div class="cta-background"></div>
+    <div class="container position-relative" style="z-index: 2;">
+        <div class="py-5">
+            <h2 class="display-5 fw-bold mb-4">Ready to book your room?</h2>
+            <p class="lead mb-5 fs-5 opacity-90">Join hundreds of satisfied customers who trust ReservO for their accommodation needs.</p>
+            <a href="/accounts/login/" class="btn btn-cta btn-lg px-5 py-3 rounded-pill shadow-lg">
+                <span class="me-2">Get Started</span>
+                <i class="bi bi-arrow-right-circle"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Enhanced Styles -->
+<style>
+/* Hero Section */
+.hero-section {
+    padding: 120px 0 180px;
+    position: relative;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.hero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    opacity: 1;
+}
+
+.hero-background::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+}
+
+.hero-wave {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+
+.hero-wave svg {
+    display: block;
+    width: 100%;
+    height: 80px;
+}
+
+.animate-fade-in {
+    animation: fadeInUp 0.8s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.btn-hero {
+    background: white;
+    color: #667eea;
+    font-weight: 600;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.btn-hero:hover {
+    background: #f8f9fa;
+    color: #667eea;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Room Cards */
+.room-card {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 16px;
+    overflow: hidden;
+    background: white;
+}
+
+.shadow-hover {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+}
+
+.room-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.card-img-wrapper {
+    position: relative;
+    overflow: hidden;
+    height: 250px;
+}
+
+.card-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.room-card:hover .card-img-wrapper img {
+    transform: scale(1.1);
+}
+
+.card-overlay {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 1;
+}
+
+.card-overlay .badge {
+    font-weight: 600;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+}
+
+.feature-badge {
+    display: inline-block;
+    font-size: 0.875rem;
+    color: #6c757d;
+    margin-right: 12px;
+    margin-bottom: 8px;
+}
+
+/* Features Section */
+.features-section {
+    background: white;
+}
+
+.feature-box {
+    transition: all 0.3s ease;
+    border-radius: 12px;
+}
+
+.feature-box:hover {
+    background: #f8f9fa;
+    transform: translateY(-5px);
+}
+
+.feature-icon-wrapper {
+    transition: transform 0.3s ease;
+}
+
+.feature-box:hover .feature-icon-wrapper {
+    transform: scale(1.1);
+}
+
+/* CTA Section */
+.cta-section {
+    padding: 100px 0;
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    position: relative;
+}
+
+.cta-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    opacity: 1;
+}
+
+.cta-background::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 70% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 30% 70%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+}
+
+.btn-cta {
+    background: white;
+    color: #764ba2;
+    font-weight: 600;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.btn-cta:hover {
+    background: #f8f9fa;
+    color: #764ba2;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Button Styles */
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 80px 0 140px;
+    }
+
+    .display-3 {
+        font-size: 2.5rem;
+    }
+
+    .display-5 {
+        font-size: 2rem;
+    }
+
+    .card-img-wrapper {
+        height: 200px;
+    }
+}
+</style>
+
+{% endblock %}

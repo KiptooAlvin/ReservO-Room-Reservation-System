@@ -1,4 +1,3 @@
-# bookings/admin.py
 from django.contrib import admin
 from .models import Booking
 
@@ -8,14 +7,15 @@ class BookingAdmin(admin.ModelAdmin):
     list_filter = ("status", "check_in", "check_out")
     search_fields = ("user__username", "room__room_number")
     readonly_fields = ("total_price", "created_at")
-    actions = ["mark_confirmed", "mark_cancelled"]
 
-    def mark_confirmed(self, request, queryset):
-        updated = queryset.update(status="confirmed")
-        self.message_user(request, f"{updated} booking(s) marked confirmed.")
-    mark_confirmed.short_description = "Mark selected bookings as Confirmed"
+    actions = ["mark_approved", "mark_declined"]
 
-    def mark_cancelled(self, request, queryset):
-        updated = queryset.update(status="cancelled")
-        self.message_user(request, f"{updated} booking(s) marked cancelled.")
-    mark_cancelled.short_description = "Mark selected bookings as Cancelled"
+    @admin.action(description="Mark selected bookings as Approved")
+    def mark_approved(self, request, queryset):
+        updated = queryset.update(status=Booking.STATUS_APPROVED)
+        self.message_user(request, f"{updated} booking(s) marked as Approved.")
+
+    @admin.action(description="Mark selected bookings as Declined")
+    def mark_declined(self, request, queryset):
+        updated = queryset.update(status=Booking.STATUS_DECLINED)
+        self.message_user(request, f"{updated} booking(s) marked as Declined.")

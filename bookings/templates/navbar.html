@@ -1,14 +1,533 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-        <a href="/rooms" class="navbar-brand">ReservO</a>
+<nav class="navbar navbar-expand-lg sticky-top" id="mainNavbar">
+    <div class="container-fluid px-4">
 
+        <!-- Brand with Icon -->
+        <a class="navbar-brand" href="{% url 'home' %}">
+            <div class="brand-wrapper">
+                <span class="brand-icon">
+                    <i class="bi bi-building"></i>
+                </span>
+                <span class="brand-text">ReservO</span>
+            </div>
+        </a>
+
+        <!-- Mobile Toggle -->
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+            <span class="navbar-toggler-custom">
+                <span></span>
+                <span></span>
+                <span></span>
+            </span>
+        </button>
+
+        <!-- Navbar Content -->
+        <div class="collapse navbar-collapse" id="navbarContent">
+
+            <!-- Left menu -->
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'home' %}">
+                        <i class="bi bi-house-door me-1"></i>
+                        <span>Home</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/rooms/' %}active{% endif %}" href="/rooms/">
+                        <i class="bi bi-door-open me-1"></i>
+                        <span>Rooms</span>
+                    </a>
+                </li>
+
+                {% if request.user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/bookings/' %}active{% endif %}" href="/bookings/">
+                        <i class="bi bi-calendar-check me-1"></i>
+                        <span>My Bookings</span>
+                    </a>
+                </li>
+                {% endif %}
+
+            </ul>
+
+            <!-- Center search -->
+            <form class="search-form mx-auto d-none d-lg-flex" method="get" action="/rooms/">
+                <div class="search-wrapper">
+                    <i class="bi bi-search search-icon"></i>
+                    <input class="search-input" type="search" placeholder="Search rooms..." name="q">
+                </div>
+            </form>
+
+            <!-- Right side buttons -->
+            <ul class="navbar-nav ms-auto align-items-lg-center">
+
+                {% if request.user.is_authenticated %}
+                    <!-- Profile -->
+                    <li class="nav-item me-2">
+                        <a href="{% url 'accounts:profile' %}" class="btn btn-profile">
+                            <i class="bi bi-person-circle me-2"></i>
+                            <span>{{ request.user.username }}</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item me-2">
+                        <a href="{% url 'accounts:logout' %}" class="btn btn-logout">
+                            <i class="bi bi-box-arrow-right me-1"></i>
+                            <span>Logout</span>
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="nav-item me-2">
+                        <a href="{% url 'accounts:login' %}" class="btn btn-login">
+                            <i class="bi bi-box-arrow-in-right me-1"></i>
+                            <span>Login</span>
+                        </a>
+                    </li>
+                    <li class="nav-item me-2">
+                        <a href="{% url 'accounts:register' %}" class="btn btn-register">
+                            <i class="bi bi-person-plus me-1"></i>
+                            <span>Register</span>
+                        </a>
+                    </li>
+                {% endif %}
+
+                <!-- Dark mode toggle -->
+                <li class="nav-item">
+                    <button id="themeToggle" class="btn btn-theme-toggle">
+                        <i class="bi bi-moon-stars theme-icon"></i>
+                    </button>
+                </li>
+            </ul>
+
+        </div>
     </div>
-    <ul class="navbar-nav">
-        {% if request.user.is_staff or request.user.is_superuser %}
-    <li><a href="/rooms/" class="btn btn-primary">Add Room</a></li>
-{% endif %}
-
-        <li class="nav-item"><a href="/bookings" class="navbar-link">Bookings</a></li>
-
-    </ul>
 </nav>
+
+
+<!-- Dark Mode Script -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const toggle = document.getElementById("themeToggle");
+    const body = document.body;
+    const navbar = document.getElementById("mainNavbar");
+    const themeIcon = toggle.querySelector('.theme-icon');
+
+    // Load saved theme
+    if (localStorage.getItem("darkMode") === "enabled") {
+        body.classList.add("dark-mode");
+        navbar.classList.add("navbar-dark");
+        navbar.classList.remove("navbar-light");
+        themeIcon.classList.remove('bi-moon-stars');
+        themeIcon.classList.add('bi-sun');
+    }
+
+    toggle.addEventListener("click", function () {
+        body.classList.toggle("dark-mode");
+
+        if (body.classList.contains("dark-mode")) {
+            localStorage.setItem("darkMode", "enabled");
+            navbar.classList.add("navbar-dark");
+            navbar.classList.remove("navbar-light");
+            themeIcon.classList.remove('bi-moon-stars');
+            themeIcon.classList.add('bi-sun');
+        } else {
+            localStorage.setItem("darkMode", "disabled");
+            navbar.classList.remove("navbar-dark");
+            navbar.classList.add("navbar-light");
+            themeIcon.classList.remove('bi-sun');
+            themeIcon.classList.add('bi-moon-stars');
+        }
+    });
+});
+</script>
+
+<!-- Enhanced Navbar Styles -->
+<style>
+:root {
+    --nav-gradient-light: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 249, 250, 0.98) 100%);
+    --nav-gradient-dark: linear-gradient(135deg, rgba(26, 26, 46, 0.98) 0%, rgba(15, 15, 30, 0.98) 100%);
+    --primary-color: #667eea;
+    --secondary-color: #764ba2;
+    --accent-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --danger-color: #ef4444;
+    --success-color: #10b981;
+}
+
+/* Navbar Base */
+#mainNavbar {
+    background: var(--nav-gradient-light);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
+    padding: 0.75rem 0;
+}
+
+#mainNavbar.navbar-dark {
+    background: var(--nav-gradient-dark);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Brand Styling */
+.brand-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 700;
+    font-size: 1.75rem;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    transition: all 0.3s ease;
+}
+
+.brand-icon {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent-gradient);
+    border-radius: 12px;
+    color: white;
+    font-size: 1.3rem;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    transition: all 0.3s ease;
+}
+
+.navbar-brand:hover .brand-icon {
+    transform: rotate(5deg) scale(1.05);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.navbar-brand:hover .brand-wrapper {
+    transform: translateX(3px);
+}
+
+/* Custom Mobile Toggle */
+.navbar-toggler {
+    padding: 0.5rem;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.navbar-toggler:focus {
+    box-shadow: none;
+}
+
+.navbar-toggler-custom {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 26px;
+}
+
+.navbar-toggler-custom span {
+    display: block;
+    width: 100%;
+    height: 3px;
+    background: var(--accent-gradient);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.navbar-toggler:not(.collapsed) .navbar-toggler-custom span:nth-child(1) {
+    transform: rotate(45deg) translate(6px, 6px);
+}
+
+.navbar-toggler:not(.collapsed) .navbar-toggler-custom span:nth-child(2) {
+    opacity: 0;
+}
+
+.navbar-toggler:not(.collapsed) .navbar-toggler-custom span:nth-child(3) {
+    transform: rotate(-45deg) translate(6px, -6px);
+}
+
+/* Nav Links */
+.nav-link {
+    position: relative;
+    padding: 0.6rem 1.2rem !important;
+    color: #4b5563 !important;
+    font-weight: 500;
+    font-size: 0.95rem;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-dark .nav-link {
+    color: #d1d5db !important;
+}
+
+.nav-link i {
+    font-size: 1.1rem;
+    transition: transform 0.3s ease;
+}
+
+.nav-link:hover {
+    color: var(--primary-color) !important;
+    background: rgba(102, 126, 234, 0.08);
+    transform: translateY(-2px);
+}
+
+.nav-link:hover i {
+    transform: scale(1.15);
+}
+
+.nav-link.active {
+    color: var(--primary-color) !important;
+    background: rgba(102, 126, 234, 0.12);
+    font-weight: 600;
+}
+
+.nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 3px;
+    background: var(--accent-gradient);
+    border-radius: 2px;
+}
+
+/* Search Form */
+.search-form {
+    position: relative;
+    width: 280px;
+}
+
+.search-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.search-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9ca3af;
+    font-size: 1rem;
+    z-index: 2;
+}
+
+.search-input {
+    width: 100%;
+    padding: 0.65rem 1rem 0.65rem 2.8rem;
+    border: 2px solid rgba(102, 126, 234, 0.15);
+    border-radius: 25px;
+    background: rgba(255, 255, 255, 0.8);
+    color: #374151;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.navbar-dark .search-input {
+    background: rgba(255, 255, 255, 0.05);
+    color: #e5e7eb;
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    background: white;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.15);
+    transform: translateY(-1px);
+}
+
+.navbar-dark .search-input:focus {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.search-input::placeholder {
+    color: #9ca3af;
+}
+
+/* Button Base Styles */
+.navbar-nav .btn {
+    padding: 0.6rem 1.5rem;
+    border-radius: 25px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    border: none;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+}
+
+.navbar-nav .btn i {
+    font-size: 1rem;
+}
+
+/* Profile Button */
+.btn-profile {
+    background: rgba(102, 126, 234, 0.1);
+    color: var(--primary-color);
+    border: 2px solid rgba(102, 126, 234, 0.2);
+}
+
+.btn-profile:hover {
+    background: var(--accent-gradient);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+}
+
+/* Logout Button */
+.btn-logout {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--danger-color);
+    border: 2px solid rgba(239, 68, 68, 0.2);
+}
+
+.btn-logout:hover {
+    background: var(--danger-color);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.3);
+}
+
+/* Login Button */
+.btn-login {
+    background: transparent;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+}
+
+.btn-login:hover {
+    background: var(--primary-color);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+}
+
+/* Register Button */
+.btn-register {
+    background: var(--accent-gradient);
+    color: white;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.btn-register:hover {
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+    color: white;
+}
+
+/* Theme Toggle */
+.btn-theme-toggle {
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    border-radius: 50%;
+    background: rgba(102, 126, 234, 0.1);
+    color: var(--primary-color);
+    border: 2px solid rgba(102, 126, 234, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.btn-theme-toggle:hover {
+    background: var(--accent-gradient);
+    color: white;
+    transform: rotate(20deg) scale(1.05);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+}
+
+.theme-icon {
+    font-size: 1.1rem;
+}
+
+/* Dark Mode Styles */
+.dark-mode {
+    background-color: #0f0f1e !important;
+    color: #f1f1f1;
+    transition: background-color 0.3s ease;
+}
+
+.dark-mode .card,
+.dark-mode .table {
+    background-color: #1a1a2e;
+    color: white;
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode input,
+.dark-mode textarea,
+.dark-mode select {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    color: white !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.dark-mode input:focus,
+.dark-mode textarea:focus,
+.dark-mode select:focus {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    border-color: var(--primary-color) !important;
+}
+
+/* Responsive Design */
+@media (max-width: 991px) {
+    .search-form {
+        width: 100%;
+        margin: 1rem 0;
+    }
+
+    .navbar-nav .btn {
+        width: 100%;
+        justify-content: center;
+        margin: 0.3rem 0;
+    }
+
+    .nav-link {
+        padding: 0.75rem 1rem !important;
+    }
+
+    .btn-theme-toggle {
+        width: 100%;
+        border-radius: 25px;
+        height: auto;
+        padding: 0.6rem;
+    }
+}
+
+@media (max-width: 575px) {
+    .brand-wrapper {
+        font-size: 1.5rem;
+    }
+
+    .brand-icon {
+        width: 38px;
+        height: 38px;
+        font-size: 1.1rem;
+    }
+}
+
+/* Smooth Animations */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.navbar-collapse.show,
+.navbar-collapse.collapsing {
+    animation: slideDown 0.3s ease-out;
+}
+</style>

@@ -1,36 +1,60 @@
 {% extends "base.html" %}
-
 {% block content %}
-<h2>Rooms</h2>
-<a href="{% url 'room_create' %}" class="btn btn-primary">Add New Room</a>
 
-<table class="table table-bordered mt-3">
-    <tr>
-        <th>Room Number</th>
-        <th>Type</th>
-        <th>Capacity</th>
-        <th>Status</th>
-        <th>Image</th>
-        <th>Actions</th>
-    </tr>
-    {%  for room in rooms %}
-        <tr>
-            <td>{{ room.room_number }}</td>
-            <td>{{ room.room_type }}</td>
-            <td>{{ room.capacity }}</td>
-            <td>{{ room.status }}</td>
-            <td>
-                {% if room.image %}
-                    <img src="{{ room.image.url }}" width="80" >
-                {%  endif %}
-            </td>
-        <td>
-{#            <a href="{% url 'room_update' room.id %}" class="btn btn-sm btn-warning">Edit</a>#}
-            <a href="{% url 'room_delete' room.id %}" class="btn btn-sm btn-danger">Delete</a>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold">Rooms</h2>
+    {% if user.is_staff %}
 
-        </td>
-        </tr>
+    <a href="{% url 'room_create' %}" class="btn btn-primary btn-lg shadow-sm">Add New Room</a>
+{% endif %}
+</div>
+
+<div class="row g-4">
+    {% for room in rooms %}
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm border-0 room-card">
+            {% if room.image %}
+            <img src="{{ room.image.url }}" class="card-img-top" alt="Room {{ room.room_number }}">
+            {% else %}
+            <img src="/media/rooms/suite2.jpg" class="card-img-top" alt="No Image">
+            {% endif %}
+            <div class="card-body text-center">
+                <h5 class="card-title fw-bold">Room {{ room.room_number }}</h5>
+                <p class="card-text mb-1"><strong>Type:</strong> {{ room.room_type }}</p>
+                <p class="card-text mb-1"><strong>Capacity:</strong> {{ room.capacity }}</p>
+                <p class="card-text mb-3"><strong>Status:</strong> {{ room.status }}</p>
+                <div class="d-flex justify-content-center gap-2">
+                    {# Optional: Edit button if needed #}
+                    {% if user.is_staff %}
+
+    <!-- Show Edit/Delete -->
+                        <a href="{% url 'room_update' room.id %}" class="btn btn-warning btn-sm">Edit</a>
+                    <a href="{% url 'room_delete' room.id %}" class="btn btn-danger btn-sm">Delete</a>
+{% endif %}
+{#                <a href="{% url 'bookings:booking_list' room.id %}" class="btn btn-danger btn-sm">Book Now</a>#}
+
+
+                </div>
+            </div>
+        </div>
+    </div>
     {% endfor %}
+</div>
 
-</table>
+<!-- Hover animations -->
+<style>
+.room-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.room-card:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+.btn-danger:hover {
+    transform: scale(1.05) rotate(-2deg);
+    box-shadow: 0 5px 15px rgba(220,53,69,0.5);
+    transition: all 0.3s ease;
+}
+</style>
+
 {% endblock %}

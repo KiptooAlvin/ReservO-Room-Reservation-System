@@ -1,15 +1,408 @@
 {% extends 'base.html' %}
-{%  block content %}
-    <h2>
-    {{ form.instance.id|yesno:"Update Booking,New Booking" }}
+{% block content %}
 
-    </h2>
+<div class="booking-form-wrapper d-flex justify-content-center align-items-center" style="min-height: 90vh;">
+    <div class="booking-form-container">
+        <!-- Decorative Elements -->
+        <div class="decoration-circle decoration-1"></div>
+        <div class="decoration-circle decoration-2"></div>
 
-    <form method="post" class="mt-3">
-    {%  csrf_token %}
-    {{ form.as_p }}
-    <button class="btn btn-success" type="submit">Save</button>
-        <a href="{% url 'bookings:booking_list' %}" class="btn btn-secondary">Cancel</a>
+        <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+            <!-- Form Header -->
+            <div class="form-header text-center p-4">
+                <div class="header-icon mb-3">
+                    {% if form.instance.id %}
+                        <i class="bi bi-pencil-square"></i>
+                    {% else %}
+                        <i class="bi bi-calendar-plus"></i>
+                    {% endif %}
+                </div>
+                <h1 class="fw-bold mb-2 text-white">
+                    {{ form.instance.id|yesno:"Update Booking,Create New Booking" }}
+                </h1>
+                <p class="text-white-50 mb-0">
+                    {% if form.instance.id %}
+                        <i class="bi bi-info-circle me-2"></i>Modify your reservation details
+                    {% else %}
+                        <i class="bi bi-star me-2"></i>Reserve your perfect room
+                    {% endif %}
+                </p>
+            </div>
 
-    </form>
-{%  endblock %}
+            <!-- Form Body -->
+            <div class="card-body p-5">
+                <form method="post" class="booking-form">
+                    {% csrf_token %}
+
+                    <div class="form-fields">
+                        {% for field in form %}
+                            <div class="mb-4">
+                                <label for="{{ field.id_for_label }}" class="form-label fw-semibold text-dark mb-2">
+                                    {% if 'room' in field.name %}
+                                        <i class="bi bi-door-open me-2"></i>
+                                    {% elif 'check_in' in field.name or 'check-in' in field.name %}
+                                        <i class="bi bi-calendar-check me-2"></i>
+                                    {% elif 'check_out' in field.name or 'check-out' in field.name %}
+                                        <i class="bi bi-calendar-x me-2"></i>
+                                    {% elif 'guest' in field.name or 'user' in field.name %}
+                                        <i class="bi bi-person-circle me-2"></i>
+                                    {% elif 'price' in field.name %}
+                                        <i class="bi bi-cash-coin me-2"></i>
+                                    {% elif 'status' in field.name %}
+                                        <i class="bi bi-info-circle me-2"></i>
+                                    {% else %}
+                                        <i class="bi bi-pencil me-2"></i>
+                                    {% endif %}
+                                    {{ field.label }}
+                                </label>
+
+                                {{ field }}
+
+                                {% if field.help_text %}
+                                    <small class="form-text text-muted d-block mt-2">
+                                        <i class="bi bi-lightbulb me-1"></i>{{ field.help_text }}
+                                    </small>
+                                {% endif %}
+
+                                {% if field.errors %}
+                                    <div class="invalid-feedback d-block mt-2">
+                                        {% for error in field.errors %}
+                                            <i class="bi bi-exclamation-triangle me-1"></i>{{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Form Actions -->
+                    <div class="form-actions mt-4">
+                        <button type="submit" class="btn btn-success btn-lg w-100 rounded-3 shadow-sm mb-3 save-btn">
+                            <i class="bi bi-check-circle me-2"></i>
+                            <span>{{ form.instance.id|yesno:"Update Booking,Save Booking" }}</span>
+                        </button>
+
+                        <a href="{% url 'bookings:my_bookings' %}" class="btn btn-outline-secondary btn-lg w-100 rounded-3 cancel-btn">
+                            <i class="bi bi-x-circle me-2"></i>Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Helper Info -->
+            <div class="card-footer bg-light p-4 border-0">
+                <div class="d-flex align-items-center justify-content-center text-muted small">
+                    <i class="bi bi-shield-check me-2"></i>
+                    <span>Your booking information is secure and encrypted</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Additional Info -->
+        <div class="text-center mt-4">
+            <p class="text-white small mb-0">
+                <i class="bi bi-question-circle me-1"></i>
+                Need help? Check our booking policies or contact support
+            </p>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Main Wrapper */
+.booking-form-wrapper {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    position: relative;
+    overflow: hidden;
+    padding: 2rem 0;
+}
+
+.booking-form-container {
+    max-width: 600px;
+    width: 100%;
+    padding: 20px;
+    position: relative;
+    z-index: 2;
+    animation: fadeInUp 0.8s ease-out;
+}
+
+/* Decorative Elements */
+.decoration-circle {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    z-index: 1;
+    animation: float 6s ease-in-out infinite;
+}
+
+.decoration-1 {
+    width: 300px;
+    height: 300px;
+    top: -100px;
+    left: -100px;
+}
+
+.decoration-2 {
+    width: 250px;
+    height: 250px;
+    bottom: -80px;
+    right: -80px;
+    animation-delay: 3s;
+}
+
+/* Card Styles */
+.card {
+    background: white;
+    backdrop-filter: blur(10px);
+}
+
+/* Form Header */
+.form-header {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    border-bottom: 3px solid rgba(255, 255, 255, 0.2);
+    animation: slideDown 0.6s ease-out;
+}
+
+/* Header Icon */
+.header-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    animation: pulse 2s ease-in-out infinite;
+    border: 5px solid rgba(255, 255, 255, 0.3);
+}
+
+.header-icon i {
+    font-size: 2.5rem;
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Form Styles */
+.booking-form {
+    animation: fadeIn 1s ease-out 0.3s both;
+}
+
+.form-control, .form-select, textarea.form-control {
+    border: 2px solid #e9ecef;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    border-radius: 0.5rem;
+}
+
+.form-control:focus, .form-select:focus, textarea.form-control:focus {
+    border-color: #11998e;
+    box-shadow: 0 0 0 0.2rem rgba(17, 153, 142, 0.15);
+    transform: translateY(-2px);
+}
+
+.form-label {
+    color: #495057;
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Form Fields Scrollable Area */
+.form-fields {
+    max-height: 50vh;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.form-fields::-webkit-scrollbar {
+    width: 6px;
+}
+
+.form-fields::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.form-fields::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    border-radius: 10px;
+}
+
+.form-fields::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #0d7a6f 0%, #2dd468 100%);
+}
+
+/* Help Text */
+.form-text {
+    font-size: 0.85rem;
+    color: #6c757d;
+}
+
+/* Error Messages */
+.invalid-feedback {
+    color: #dc3545;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+/* Button Styles */
+.save-btn {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    border: none;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    padding: 0.875rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.save-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(17, 153, 142, 0.4) !important;
+}
+
+.save-btn:active {
+    transform: translateY(-1px);
+}
+
+.save-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.save-btn:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.cancel-btn {
+    border: 2px solid #6c757d;
+    color: #6c757d;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.cancel-btn:hover {
+    background: #6c757d;
+    border-color: #6c757d;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(108, 117, 125, 0.3);
+}
+
+/* Card Footer */
+.card-footer {
+    animation: fadeIn 1s ease-out 0.5s both;
+}
+
+/* Form Actions */
+.form-actions {
+    animation: fadeIn 1s ease-out 0.4s both;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-20px) rotate(5deg);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+/* Date Input Styling */
+input[type="date"], input[type="datetime-local"] {
+    position: relative;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    border-radius: 4px;
+    padding: 5px;
+    cursor: pointer;
+}
+
+/* Responsive Design */
+@media (max-width: 576px) {
+    .booking-form-container {
+        padding: 15px;
+    }
+
+    .card-body {
+        padding: 2rem !important;
+    }
+
+    .header-icon {
+        width: 70px;
+        height: 70px;
+    }
+
+    .header-icon i {
+        font-size: 2rem;
+    }
+
+    .form-fields {
+        max-height: 45vh;
+    }
+
+    .form-header h1 {
+        font-size: 1.5rem;
+    }
+}
+</style>
+
+{% endblock %}

@@ -1,12 +1,34 @@
 {% extends "base.html" %}
-
 {% block content %}
-<h2>Delete Room</h2>
-<p>Are you sure you want to delete room {{ room.room_number }}?</p>
 
-<form method="post">
-    {% csrf_token %}
-    <button class="btn btn-danger">Yes, Delete</button>
-    <a href="{%  url 'room_list' %}" class="btn btn-primary">Cancel</a>
-</form>
+<div class="card shadow-sm border-0 mx-auto mt-5" style="max-width: 500px;">
+    <div class="card-header bg-danger text-white text-center">
+        <h2 class="fw-bold mb-0">Delete Room</h2>
+    </div>
+    <div class="card-body text-center">
+        <p class="lead">Are you sure you want to delete <strong>Room {{ room.room_number }}</strong>?</p>
+        <form method="post" class="d-flex justify-content-center gap-3 mt-3">
+            {% csrf_token %}
+            <button class="btn btn-danger btn-lg shadow-sm" type="submit">Yes, Delete</button>
+            <a href="{% url 'room_list' %}" class="btn btn-secondary btn-lg shadow-sm">Cancel</a>
+        </form>
+    </div>
+</div>
+
+<!-- Animations -->
+<style>
+.card-body p {
+    animation: fadeIn 0.6s ease forwards;
+}
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+.btn-danger:hover, .btn-secondary:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+}
+</style>
+
 {% endblock %}

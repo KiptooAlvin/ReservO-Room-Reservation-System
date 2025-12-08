@@ -2,7 +2,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Booking
-from .forms import BookingForm, SearchAvailabilityForm, BookingForm
+from .forms import  SearchAvailabilityForm, BookingForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.db import transaction
@@ -57,6 +57,8 @@ def booking_create(request):
         if form.is_valid():
             booking = form.save(commit=False)
 
+            booking.user = request.user
+
             # Check availability
             if not booking.room.is_available_for_period(booking.check_in, booking.check_out):
                 messages.error(request, "Room is NOT available for the selected dates.")
@@ -83,11 +85,11 @@ def booking_update(request, pk):
         if form.is_valid():
             new_booking = form.save(commit=False)
 
-            # # Only re-check if room or dates changed
-            # if (new_booking.room != old_room or new_booking.check_in != old_in or new_booking.check_out != old_out):
-            #     if not new_booking.room.is_available(new_booking.check_in, new_booking.check_out):
-            #         messages.error(request, "Room is not available for the updated dates.")
-            #         return render(request, 'bookings/booking_form.html', {'form': form})
+            # Only re-check if room or dates changed
+            if new_booking.room != old_room or new_booking.check_in != old_in or new_booking.check_out != old_out:
+                if not new_booking.room.is_available(new_booking.check_in, new_booking.check_out):
+                    messages.error(request, "Room is not available for the updated dates.")
+                    return render(request, 'bookings/booking_form.html', {'form': form})
 
             new_booking.total_price = new_booking.calculate_total_price()
             new_booking.save()
@@ -191,3 +193,10 @@ def booking_edit(request, pk):
         form = BookingForm(instance=booking)
 
     return render(request, "bookings/booking_form.html", {"form": form, "booking": booking})
+@login_required
+def my_bookings(request):
+    """
+    Dedicated page showing bookings for the logged-in user only.
+    """
+    bookings = Booking.objects.filter(user=request.user).order_by('-check_in')
+    return render(request, 'bookings/my_bookings.html', {'bookings': bookings})

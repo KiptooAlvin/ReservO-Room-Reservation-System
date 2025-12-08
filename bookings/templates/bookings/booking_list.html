@@ -1,64 +1,168 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container mt-4">
-    <h2 class="mb-4">Bookings</h2>
+<div class="container mt-5 mb-5">
+    <!-- Header Section -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="fw-bold mb-1">Bookings Management</h1>
+            <p class="text-muted mb-0">Manage and track all hotel reservations</p>
+        </div>
+        <a href="{% url 'bookings:booking_create' %}" class="btn btn-primary btn-lg shadow-sm">
+            <i class="bi bi-plus-circle me-2"></i>New Booking
+        </a>
+    </div>
 
-    <a href="{% url 'bookings:booking_create' %}" class="btn btn-primary mb-3">New Booking</a>
-
-    <div class="table-responsive">
-        <table class="table table-bordered table-striped text-center align-middle">
-            <thead class="table-dark">
-                <tr>
-                    <th>User</th>
-                    <th>Room</th>
-                    <th>Check-in</th>
-                    <th>Check-out</th>
-                    <th>Total Price</th>
-                    <th>Actions</th>
-                    <th>Status</th>
-                    {% if user.is_staff %}
-                        <th>Admin Actions</th>
-                    {% endif %}
-                </tr>
-            </thead>
-            <tbody>
-                {% for booking in bookings %}
-                <tr>
-                    <td>{{ booking.user.username }}</td>
-                    <td>{{ booking.room }}</td>
-                    <td>{{ booking.check_in }}</td>
-                    <td>{{ booking.check_out }}</td>
-                    <td>${{ booking.total_price }}</td>
-                    <td>
-                        <a href="{% url 'bookings:booking_update' booking.id %}" class="btn btn-warning btn-sm me-1">Edit</a>
-                        <a href="{% url 'bookings:booking_delete' booking.id %}" class="btn btn-danger btn-sm">Delete</a>
-                    </td>
-                    <td>
-                        {% if booking.status == 'Pending' %}
-                            <span class="badge bg-warning text-dark">{{ booking.status }}</span>
-                        {% elif booking.status == 'Approved' %}
-                            <span class="badge bg-success">{{ booking.status }}</span>
-                        {% elif booking.status == 'Declined' %}
-                            <span class="badge bg-danger">{{ booking.status }}</span>
-                        {% else %}
-                            {{ booking.status }}
-                        {% endif %}
-                    </td>
-                    {% if user.is_staff %}
-                        <td>
-                            {% if booking.status == 'Pending' %}
-                                <a href="{% url 'approve_booking' booking.id %}" class="btn btn-success btn-sm me-1">Approve</a>
-                                <a href="{% url 'decline_booking' booking.id %}" class="btn btn-danger btn-sm">Decline</a>
-                            {% else %}
-                                -
+    <!-- Bookings Table Card -->
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-dark text-white">
+                        <tr>
+                            <th class="px-4 py-3">Guest</th>
+                            <th class="px-4 py-3">Room</th>
+                            <th class="px-4 py-3">Check-in</th>
+                            <th class="px-4 py-3">Check-out</th>
+                            <th class="px-4 py-3">Total Price</th>
+                            <th class="px-4 py-3">Status</th>
+                            <th class="px-4 py-3 text-center">Actions</th>
+                            {% if user.is_staff %}
+                                <th class="px-4 py-3 text-center">Admin Actions</th>
                             {% endif %}
-                        </td>
-                    {% endif %}
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for booking in bookings %}
+                        <tr class="border-bottom">
+                            <td class="px-4 py-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar-circle bg-primary text-white me-2">
+                                        {{ booking.user.username|slice:":1"|upper }}
+                                    </div>
+                                    <span class="fw-semibold">{{ booking.user.username }}</span>
+                                </div>
+                            </td>
+                            <td class="px-4 py-3">
+                                <span class="text-dark fw-medium">{{ booking.room }}</span>
+                            </td>
+                            <td class="px-4 py-3">
+                                <small class="text-muted d-block">Check-in</small>
+                                <span class="fw-medium">{{ booking.check_in }}</span>
+                            </td>
+                            <td class="px-4 py-3">
+                                <small class="text-muted d-block">Check-out</small>
+                                <span class="fw-medium">{{ booking.check_out }}</span>
+                            </td>
+                            <td class="px-4 py-3">
+                                <span class="fw-bold text-success">${{ booking.total_price }}</span>
+                            </td>
+                            <td class="px-4 py-3">
+                                {% if booking.status == 'Pending' %}
+                                    <span class="badge rounded-pill bg-warning text-dark px-3 py-2">
+                                        <i class="bi bi-clock me-1"></i>{{ booking.status }}
+                                    </span>
+                                {% elif booking.status == 'Approved' %}
+                                    <span class="badge rounded-pill bg-success px-3 py-2">
+                                        <i class="bi bi-check-circle me-1"></i>{{ booking.status }}
+                                    </span>
+                                {% elif booking.status == 'Declined' %}
+                                    <span class="badge rounded-pill bg-danger px-3 py-2">
+                                        <i class="bi bi-x-circle me-1"></i>{{ booking.status }}
+                                    </span>
+                                {% else %}
+                                    <span class="badge rounded-pill bg-secondary px-3 py-2">{{ booking.status }}</span>
+                                {% endif %}
+                            </td>
+                            <td class="px-4 py-3 text-center">
+                                <div class="btn-group" role="group">
+                                    <a href="{% url 'bookings:booking_update' booking.id %}"
+                                       class="btn btn-sm btn-outline-warning"
+                                       title="Edit Booking">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <a href="{% url 'bookings:booking_delete' booking.id %}"
+                                       class="btn btn-sm btn-outline-danger"
+                                       title="Delete Booking">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
+                            {% if user.is_staff %}
+                                <td class="px-4 py-3 text-center">
+                                    {% if booking.status == 'Pending' %}
+                                        <div class="btn-group" role="group">
+                                            <a href="{% url 'approve_booking' booking.id %}"
+                                               class="btn btn-sm btn-success">
+                                                <i class="bi bi-check-lg me-1"></i>Approve
+                                            </a>
+                                            <a href="{% url 'decline_booking' booking.id %}"
+                                               class="btn btn-sm btn-danger">
+                                                <i class="bi bi-x-lg me-1"></i>Decline
+                                            </a>
+                                        </div>
+                                    {% else %}
+                                        <span class="text-muted">—</span>
+                                    {% endif %}
+                                </td>
+                            {% endif %}
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="{% if user.is_staff %}8{% else %}7{% endif %}" class="text-center py-5">
+                                <div class="text-muted">
+                                    <i class="bi bi-inbox display-4 d-block mb-3"></i>
+                                    <p class="mb-0">No bookings found</p>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
+
+<style>
+    .avatar-circle {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: rgba(0, 0, 0, 0.02);
+        transition: background-color 0.2s ease;
+    }
+
+    .btn-group .btn {
+        border-radius: 0;
+    }
+
+    .btn-group .btn:first-child {
+        border-top-left-radius: 0.25rem;
+        border-bottom-left-radius: 0.25rem;
+    }
+
+    .btn-group .btn:last-child {
+        border-top-right-radius: 0.25rem;
+        border-bottom-right-radius: 0.25rem;
+    }
+
+    .card {
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .badge {
+        font-weight: 500;
+        font-size: 0.8rem;
+    }
+</style>
 {% endblock %}
