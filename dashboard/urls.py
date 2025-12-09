@@ -1,7 +1,9 @@
 from django.urls import path
 from . import views
 
+app_name = 'dashboard'
+
 urlpatterns = [
-    # path("login/", views.login_page, name="login"),
-    # path("register/", views.register, name="register"),
+    path('', views.admin_dashboard, name='admin_dashboard'),
+    path('booking-action/', views.approve_decline_booking, name='booking_action'),
 ]
